@@ -1,0 +1,17 @@
+.crop-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.controls {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  left: 0%;
+  width: 100%;
+  padding: 0 16px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
