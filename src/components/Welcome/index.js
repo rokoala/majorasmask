@@ -1,5 +1,11 @@
 import React, { PureComponent } from "react";
+import { Link } from "react-router-dom";
 import MajorasMask from "../../resources/majoras.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faMask } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faMask);
 
 const WelcomeStyle = {
   display: "flex",
@@ -9,6 +15,14 @@ const WelcomeStyle = {
   justifyContent: "center"
 };
 
+const ButtonStyle = {
+  fontSize: 30,
+  backgroundColor: "white",
+  border: "1px solid lightgray",
+  borderRadius: 10,
+  cursor: "pointer"
+};
+
 export default class Welcome extends PureComponent {
   render() {
     return (
@@ -16,7 +30,12 @@ export default class Welcome extends PureComponent {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <img width="300" src={MajorasMask} />
           <h2>MajorasMask</h2>
-          <p>Create your own masks</p>
+          <p>Make your own Masks</p>
+          <Link to="/create">
+            <button style={ButtonStyle}>
+              <FontAwesomeIcon icon="mask" />
+            </button>
+          </Link>
         </div>
       </div>
     );

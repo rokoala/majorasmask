@@ -8,10 +8,11 @@
   box-sizing: border-box;
   position: absolute;
   bottom: 0;
-  left: 0%;
+  /* left: %; */
   width: 100%;
-  padding: 0 16px;
+  /* padding: 0 16px; */
   height: 80px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }

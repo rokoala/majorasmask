@@ -19,6 +19,42 @@ export default async function getCroppedImg(imageSrc, pixelCrop) {
   canvas.height = pixelCrop.height;
   const ctx = canvas.getContext("2d");
 
+  // ctx.drawImage(
+  //   image,
+  //   pixelCrop.x,
+  //   pixelCrop.y,
+  //   pixelCrop.width,
+  //   pixelCrop.height,
+  //   0,
+  //   0,
+  //   pixelCrop.width,
+  //   pixelCrop.height
+  // );
+
+  ctx.save();
+  ctx.beginPath();
+  // ctx.moveTo(pixelCrop.width / 2, 0);
+  // ctx.quadraticCurveTo(0, 0, 0, pixelCrop.height / 2);
+  // ctx.lineWidth = 10;
+  // ctx.moveTo(0, pixelCrop.height/2);
+  // ctx.quadraticCurveTo(0, 0, 0, pixelCrop.height / 2);
+
+  ctx.moveTo(pixelCrop.width / 2, 0);
+  ctx.ellipse(
+    pixelCrop.width / 2,
+    pixelCrop.height / 2,
+    pixelCrop.width / 2,
+    pixelCrop.height / 2,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, pixelCrop.width, pixelCrop.height);
+
+  ctx.clip();
+
   ctx.drawImage(
     image,
     pixelCrop.x,

@@ -29,6 +29,27 @@ const CustomImageStyle = {
   userDrag: "none"
 };
 
+const ButtonStyle = {
+  fontSize: 25,
+  width: 90,
+  height: 60,
+  margin: 5,
+  backgroundColor: "green",
+  color: "white",
+  border: "1px solid rgba(0,0,0,0.09)",
+  borderRadius: "5px"
+};
+
+const CancelButtonStyle = {
+  fontSize: 25,
+  height: 60,
+  margin: 5,
+  backgroundColor: "red",
+  color: "white",
+  border: "1px solid rgba(0,0,0,0.09)",
+  borderRadius: "5px"
+};
+
 export default class SetupFace extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +58,7 @@ export default class SetupFace extends Component {
       croppedImage: null,
       croppedAreaPixels: null,
       crop: { x: 0, y: 0 },
-      zoom: 2,
+      zoom: 1,
       aspect: 3 / 4
     };
   }
@@ -60,30 +81,71 @@ export default class SetupFace extends Component {
       this.state.image,
       this.state.croppedAreaPixels
     );
-    console.log(croppedImage);
     this.setState({ croppedImage });
   };
+
+  onClickCancel = () => {
+    this.setState({
+      image: null
+    });
+  };
+
+  onFileChange = async e => {
+    if (e.target.files && e.target.files.length > 0) {
+      const imageDataUrl = await readFile(e.target.files[0]);
+      this.setState({
+        image: imageDataUrl,
+        crop: { x: 0, y: 0 },
+        zoom: 1
+      });
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
-        <div className="crop-container">
-          <Cropper
-            image={this.state.image}
-            crop={this.state.crop}
-            zoom={this.state.zoom}
-            aspect={this.state.aspect}
-            onCropChange={this.onCropChange}
-            onCropComplete={this.onCropComplete}
-            onZoomChange={this.onZoomChange}
-          />
-        </div>
-        <div className="controls">
-          <button onClick={this.onClickCropImage}>OK!</button>
-        </div>
-        <div>
-          <img src={this.state.croppedImage} />
-        </div>
+        {this.state.image ? (
+          <React.Fragment>
+            <div className="crop-container">
+              <Cropper
+                image={this.state.image}
+                crop={this.state.crop}
+                zoom={this.state.zoom}
+                aspect={this.state.aspect}
+                cropShape="round"
+                showGrid={false}
+                onCropChange={this.onCropChange}
+                onCropComplete={this.onCropComplete}
+                onZoomChange={this.onZoomChange}
+              />
+            </div>
+            <div className="controls">
+              <button style={ButtonStyle} onClick={this.onClickCropImage}>
+                ok
+              </button>
+              <button style={CancelButtonStyle} onClick={this.onClickCancel}>
+                cancelar
+              </button>
+            </div>
+            <div>
+              <img src={this.state.croppedImage} />
+            </div>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <div>Upload your photo</div>
+            <input type="file" onChange={this.onFileChange} />
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
+}
+
+function readFile(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result), false);
+    reader.readAsDataURL(file);
+  });
 }
