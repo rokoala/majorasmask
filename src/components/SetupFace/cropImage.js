@@ -19,26 +19,8 @@ export default async function getCroppedImg(imageSrc, pixelCrop) {
   canvas.height = pixelCrop.height;
   const ctx = canvas.getContext("2d");
 
-  // ctx.drawImage(
-  //   image,
-  //   pixelCrop.x,
-  //   pixelCrop.y,
-  //   pixelCrop.width,
-  //   pixelCrop.height,
-  //   0,
-  //   0,
-  //   pixelCrop.width,
-  //   pixelCrop.height
-  // );
-
   ctx.save();
   ctx.beginPath();
-  // ctx.moveTo(pixelCrop.width / 2, 0);
-  // ctx.quadraticCurveTo(0, 0, 0, pixelCrop.height / 2);
-  // ctx.lineWidth = 10;
-  // ctx.moveTo(0, pixelCrop.height/2);
-  // ctx.quadraticCurveTo(0, 0, 0, pixelCrop.height / 2);
-
   ctx.moveTo(pixelCrop.width / 2, 0);
   ctx.ellipse(
     pixelCrop.width / 2,
@@ -50,11 +32,15 @@ export default async function getCroppedImg(imageSrc, pixelCrop) {
     Math.PI * 2
   );
 
-  ctx.fillStyle = "white";
+  ctx.globalAlpha = 0;
+  ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
   ctx.fillRect(0, 0, pixelCrop.width, pixelCrop.height);
+  ctx.clearRect(0, 0, pixelCrop.width, pixelCrop.height);
 
   ctx.clip();
 
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = "white";
   ctx.drawImage(
     image,
     pixelCrop.x,
@@ -67,13 +53,10 @@ export default async function getCroppedImg(imageSrc, pixelCrop) {
     pixelCrop.height
   );
 
-  // As Base64 string
-  // return canvas.toDataURL('image/jpeg');
-
   // As a blob
   return new Promise((resolve, reject) => {
     canvas.toBlob(file => {
       resolve(URL.createObjectURL(file));
-    }, "image/jpeg");
+    }, "image/png");
   });
 }
